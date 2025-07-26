@@ -2,7 +2,7 @@
 
 class CredentialManager {
     constructor() {
-        this.apiBaseUrl = window.AppConfig?.API_BASE_URL || 'http://localhost:8084/api/credentials';
+        this.apiBaseUrl = window.AppConfig?.API_BASE_URL || 'http://201.77.115.146:11003/api/credentials';
         this.credentials = [];
         this.editingId = null;
         this.deleteId = null;
