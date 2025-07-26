@@ -26,7 +26,15 @@ pipeline {
     stages {
         stage('Cleanup Workspace') {
             steps {
-                cleanWs()
+                script {
+                    echo "Limpando workspace..."
+                    sh '''
+                        # Limpar arquivos do workspace anterior
+                        rm -rf ./* || true
+                        rm -rf ./.* || true
+                        echo "Workspace limpo com sucesso!"
+                    '''
+                }
             }
         }
         
