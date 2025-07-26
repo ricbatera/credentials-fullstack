@@ -1,0 +1,21 @@
+# Frontend específico - ignore temporários e cache
+
+# Cache de desenvolvimento
+.cache/
+*.cache
+
+# Arquivos temporários do editor
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
+
+# Se no futuro adicionar ferramentas de build:
+# node_modules/
+# dist/
+# build/
+# .parcel-cache/
+
+# Arquivos de configuração local (se necessário)
+config.local.js
+.env.local

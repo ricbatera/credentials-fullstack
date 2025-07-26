@@ -1,0 +1,291 @@
+# ==================================================
+# CREDENTIALS FULL STACK - .gitignore
+# ==================================================
+
+# Configurações específicas do projeto
+*.env
+.env.local
+.env.production
+.env.staging
+
+# ==================================================
+# JAVA / SPRING BOOT / MAVEN
+# ==================================================
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Gradle
+.gradle
+build/
+!gradle/wrapper/gradle-wrapper.jar
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+# ==================================================
+# IDEs
+# ==================================================
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.metadata
+.loadpath
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# ==================================================
+# DOCKER
+# ==================================================
+
+# Docker volumes e dados persistentes
+volumes/
+data/
+
+# Arquivos Docker temporários
+.dockerignore.bak
+docker-compose.override.yml
+
+# ==================================================
+# FRONTEND (Node.js se aplicável)
+# ==================================================
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+.nyc_output
+
+# Grunt intermediate storage
+.grunt
+
+# Bower dependency directory
+bower_components
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons
+build/Release
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# ==================================================
+# BANCO DE DADOS
+# ==================================================
+
+# Dados do MySQL/PostgreSQL
+*.sql
+*.db
+*.sqlite
+*.sqlite3
+
+# Dumps de banco
+dump.sql
+*.dump
+
+# ==================================================
+# LOGS E TEMPORÁRIOS
+# ==================================================
+
+# Logs gerais
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# Cache
+.cache/
+*.cache
+
+# ==================================================
+# SISTEMA OPERACIONAL
+# ==================================================
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ==================================================
+# BACKUPS E CONFIGURAÇÕES LOCAIS
+# ==================================================
+
+# Backups
+*.bak
+*.backup
+*.old
+*.orig
+
+# Configurações locais
+application-local.properties
+application-dev.properties
+local.properties
+
+# Certificados e chaves
+*.pem
+*.key
+*.crt
+*.p12
+*.jks
+*.keystore
+
+# ==================================================
+# DADOS SENSÍVEIS
+# ==================================================
+
+# Variáveis de ambiente com dados sensíveis
+.env
+.env.local
+.env.production
+.env.staging
+.env.development
+
+# Arquivos de configuração com senhas
+config.local.json
+secrets.json
+
+# ==================================================
+# OUTROS
+# ==================================================
+
+# Arquivos de versionamento
+.hg/
+.svn/
+
+# Arquivos de patch
+*.patch
+*.diff
+
+# Arquivos de teste e temporários
+test-output/
+*.test
+coverage.out
