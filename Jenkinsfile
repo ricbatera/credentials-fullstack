@@ -78,11 +78,18 @@ pipeline {
                         mkdir -p ~/credentials/nginx-conf
                         mkdir -p ~/credentials/nginx-logs
                         
-                        # Configurar permissões
+                        # Configurar permissões básicas apenas se os diretórios estiverem vazios
                         chmod 755 ~/credentials
-                        chmod -R 777 ~/credentials/mysql-data
-                        chmod -R 755 ~/credentials/backend-logs
-                        chmod -R 755 ~/credentials/nginx-logs
+                        
+                        # Configurar permissões apenas se não houver dados do MySQL existentes
+                        if [ ! -f "~/credentials/mysql-data/ibdata1" ]; then
+                            chmod -R 777 ~/credentials/mysql-data || echo "Aviso: Não foi possível alterar permissões do mysql-data (pode já estar em uso)"
+                        else
+                            echo "Dados do MySQL já existem, mantendo permissões atuais"
+                        fi
+                        
+                        chmod -R 755 ~/credentials/backend-logs || true
+                        chmod -R 755 ~/credentials/nginx-logs || true
                         
                         # Copiar configuração do nginx se existir
                         if [ -f "nginx.conf" ]; then
@@ -126,14 +133,25 @@ EOF
                 script {
                     echo "Parando serviços existentes..."
                     sh '''
-                        # Parar e remover containers existentes
+                        # Parar e remover containers existentes do projeto específico
                         docker-compose -p ${PROJECT_NAME} down --remove-orphans || true
                         
-                        # Limpar containers órfãos
+                        # Aguardar um pouco para garantir que os containers pararam
+                        sleep 5
+                        
+                        # Verificar se ainda há containers rodando
+                        RUNNING_CONTAINERS=$(docker ps -q --filter "name=${PROJECT_NAME}" | wc -l)
+                        if [ "$RUNNING_CONTAINERS" -gt 0 ]; then
+                            echo "Ainda há containers rodando, forçando parada..."
+                            docker ps --filter "name=${PROJECT_NAME}" --format "table {{.Names}}\t{{.Status}}"
+                            docker stop $(docker ps -q --filter "name=${PROJECT_NAME}") || true
+                            docker rm $(docker ps -aq --filter "name=${PROJECT_NAME}") || true
+                        fi
+                        
+                        # Limpar containers órfãos (apenas se necessário)
                         docker container prune -f || true
                         
-                        # Limpar imagens não utilizadas (opcional)
-                        # docker image prune -f || true
+                        echo "Serviços parados com sucesso!"
                     '''
                 }
             }
