@@ -1,21 +1,42 @@
-# Frontend específico - ignore temporários e cache
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
-# Cache de desenvolvimento
-.cache/
-*.cache
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
 
-# Arquivos temporários do editor
-*.tmp
-*.temp
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# System files
 .DS_Store
 Thumbs.db
-
-# Se no futuro adicionar ferramentas de build:
-# node_modules/
-# dist/
-# build/
-# .parcel-cache/
-
-# Arquivos de configuração local (se necessário)
-config.local.js
-.env.local

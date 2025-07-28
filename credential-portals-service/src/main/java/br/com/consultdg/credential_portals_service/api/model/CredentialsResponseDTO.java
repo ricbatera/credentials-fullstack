@@ -23,6 +23,9 @@ public class CredentialsResponseDTO {
     @Schema(description = "Nome de usuário para acesso", example = "admin")
     private String username;
 
+    @Schema(description = "Senha da nota fiscal", example = "senhaNotaFiscal123")
+    private String passwordOfInvoice;
+
     @Schema(description = "Data e hora de criação", example = "2025-07-24T10:30:00")
     private LocalDateTime createdAt;
 
@@ -40,12 +43,13 @@ public class CredentialsResponseDTO {
     }
 
     public CredentialsResponseDTO(UUID id, String nameMall, String cnpj, String urlPortal, String username, 
-                                  LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt, Boolean active) {
+                                  String passwordOfInvoice, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime deletedAt, Boolean active) {
         this.id = id;
         this.nameMall = nameMall;
         this.cnpj = cnpj;
         this.urlPortal = urlPortal;
         this.username = username;
+        this.passwordOfInvoice = passwordOfInvoice;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
@@ -91,6 +95,14 @@ public class CredentialsResponseDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getPasswordOfInvoice() {
+        return passwordOfInvoice;
+    }
+
+    public void setPasswordOfInvoice(String passwordOfInvoice) {
+        this.passwordOfInvoice = passwordOfInvoice;
     }
 
     public LocalDateTime getCreatedAt() {

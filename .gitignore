@@ -289,3 +289,8 @@ secrets.json
 test-output/
 *.test
 coverage.out
+
+/front-credentials/node_modules
+/front-credentials/dist
+/front-credentials/.cache
+/front-credentials/.vscode

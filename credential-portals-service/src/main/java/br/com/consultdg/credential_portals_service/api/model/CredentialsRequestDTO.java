@@ -20,6 +20,9 @@ public class CredentialsRequestDTO {
     @Schema(description = "Senha para acesso", example = "senha123", required = true)
     private String password;
 
+    @Schema(description = "Senha da nota fiscal", example = "senhaNotaFiscal123")
+    private String passwordOfInvoice;
+
     @Schema(description = "Status ativo da credencial", example = "true", required = true)
     private Boolean active;
 
@@ -27,12 +30,13 @@ public class CredentialsRequestDTO {
     public CredentialsRequestDTO() {
     }
 
-    public CredentialsRequestDTO(String nameMall, String cnpj, String urlPortal, String username, String password, Boolean active) {
+    public CredentialsRequestDTO(String nameMall, String cnpj, String urlPortal, String username, String password, String passwordOfInvoice, Boolean active) {
         this.nameMall = nameMall;
         this.cnpj = cnpj;
         this.urlPortal = urlPortal;
         this.username = username;
         this.password = password;
+        this.passwordOfInvoice = passwordOfInvoice;
         this.active = active;
     }
 
@@ -75,6 +79,14 @@ public class CredentialsRequestDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordOfInvoice() {
+        return passwordOfInvoice;
+    }
+
+    public void setPasswordOfInvoice(String passwordOfInvoice) {
+        this.passwordOfInvoice = passwordOfInvoice;
     }
 
     public Boolean getActive() {
