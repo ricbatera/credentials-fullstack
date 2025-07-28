@@ -166,7 +166,7 @@ EOF
                         docker-compose -p ${PROJECT_NAME} build --no-cache
                         
                         # Subir a stack
-                        docker-compose -p ${PROJECT_NAME} up -d
+                        docker-compose -p ${PROJECT_NAME} up -d --build
                         
                         echo "Stack iniciada com sucesso!"
                     '''
