@@ -128,6 +128,59 @@ EOF
             }
         }
         
+        stage('Backend Tests and Build') {
+            steps {
+                script {
+                    echo "Testando e compilando o backend Java..."
+                    sh '''
+                        cd credential-portals-service
+                        
+                        echo "=== Informações do Java ==="
+                        java -version
+                        
+                        echo "=== Informações do ambiente ==="
+                        locale
+                        echo "LANG: ${LANG:-'not set'}"
+                        echo "LC_ALL: ${LC_ALL:-'not set'}"
+                        
+                        echo "=== Verificando estrutura do projeto ==="
+                        ls -la
+                        echo "Verificando DTOs específicos..."
+                        ls -la src/main/java/br/com/consultdg/credential_portals_service/api/model/
+                        
+                        echo "Verificando imports no Controller..."
+                        grep -n "import.*CredentialsWithEncryptedPasswordDTO" src/main/java/br/com/consultdg/credential_portals_service/api/controller/CredentialsController.java || true
+                        grep -n "import.*PasswordVerificationRequestDTO" src/main/java/br/com/consultdg/credential_portals_service/api/controller/CredentialsController.java || true
+                        
+                        echo "=== Configurando encoding ==="
+                        export LANG=C.UTF-8
+                        export LC_ALL=C.UTF-8
+                        export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF-8 -Dsun.jnu.encoding=UTF-8"
+                        
+                        echo "=== Compilando projeto ==="
+                        chmod +x mvnw
+                        ./mvnw clean compile -e -X 2>&1 | tee compile.log
+                        
+                        echo "=== Verificando erros de compilação ==="
+                        if grep -i "error" compile.log; then
+                            echo "Erros encontrados na compilação:"
+                            grep -i "error" compile.log
+                            echo "Contexto dos erros:"
+                            grep -B 5 -A 5 -i "error" compile.log
+                        fi
+                        
+                        echo "=== Executando testes ==="
+                        ./mvnw test -e
+                        
+                        echo "=== Gerando JAR ==="
+                        ./mvnw package -DskipTests -e
+                        
+                        ls -la target/
+                    '''
+                }
+            }
+        }
+
         stage('Stop Existing Services') {
             steps {
                 script {
