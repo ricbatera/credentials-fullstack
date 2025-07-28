@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  front-credentials:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "11002:80"
+    container_name: front-credentials-app
+    restart: unless-stopped
+    
+    # Volumes para desenvolvimento (opcional)
+    # volumes:
+    #   - ./src:/app/src
+    
+    # Variáveis de ambiente (se necessário)
+    # environment:
+    #   - NODE_ENV=production
+    
+    # Healthcheck
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

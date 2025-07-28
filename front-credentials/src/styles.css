@@ -1,0 +1,136 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Estilos globais para as páginas */
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.page-container h1 {
+  color: #2c3e50;
+  margin-bottom: 10px;
+  font-size: 2.5em;
+  font-weight: 300;
+}
+
+.page-container > p {
+  color: #7f8c8d;
+  margin-bottom: 30px;
+  font-size: 1.1em;
+}
+
+.content-card {
+  background: white;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.content-card h2 {
+  color: #34495e;
+  margin-bottom: 15px;
+  font-size: 1.5em;
+}
+
+.content-card p {
+  color: #7f8c8d;
+  line-height: 1.6;
+}
+
+/* CSS Reset Modificado - Compatível com Bootstrap */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+main, menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    vertical-align: baseline;
+    /* Removido: font-size: 100%; e font: inherit; para não interferir no Bootstrap */
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, main, menu, nav, section {
+    display: block;
+}
+
+/* Body será controlado pelo Bootstrap - sem line-height override */
+
+ol, ul {
+    list-style: none;
+}
+
+blockquote, q {
+    quotes: none;
+}
+
+blockquote::before, blockquote::after,
+q::before, q::after {
+    content: '';
+    content: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* CORES */
+/*| Cor         | Pantone | RGB           | HEX         |
+| ----------- | ------- | ------------- | ----------- |
+| **Laranja** | 1585 C  | 255, 106, 19  | **#FF6A13** |
+| **Amarelo** | 130 C   | 242, 169, 54  | **#F2A936** |
+| **Marrom**  | 476 C   | 78, 54, 41    | **#4E3629** |
+| **Branco**  | –       | 255, 255, 255 | **#FFFFFF** |
+ */
+:root {
+    --color-orange: #FF6A13;
+    --color-yellow: #F2A936;
+    --color-brown: #4E3629;
+    --color-white: #FFFFFF;
+}
+
+/* Classes customizadas usando as cores da empresa */
+.text-consult-orange { color: var(--color-orange) !important; }
+.text-consult-yellow { color: var(--color-yellow) !important; }
+.text-consult-brown { color: var(--color-brown) !important; }
+
+.bg-consult-orange { background-color: var(--color-orange) !important; }
+.bg-consult-yellow { background-color: var(--color-yellow) !important; }
+.bg-consult-brown { background-color: var(--color-brown) !important; }
+
+.btn-consult-orange {
+    background-color: var(--color-orange);
+    border-color: var(--color-orange);
+    color: white;
+}
+
+.btn-consult-orange:hover {
+    background-color: #e55a0f;
+    border-color: #e55a0f;
+    color: white;
+}
+
+.btn-consult-yellow {
+    background-color: var(--color-yellow);
+    border-color: var(--color-yellow);
+    color: var(--color-brown);
+}
+
+.btn-consult-yellow:hover {
+    background-color: #e19820;
+    border-color: #e19820;
+    color: var(--color-brown);
+}

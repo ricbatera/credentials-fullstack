@@ -1,0 +1,170 @@
+<div class="page-container">
+  <div class="page-header">
+    <h1>👥 Consumers (Consumer Keys)</h1>
+    <p>Gerencie os consumers (chaves públicas) autorizados a acessar o sistema.</p>
+    
+    <button class="btn btn-primary" (click)="toggleAddForm()">
+      {{ showAddForm() ? '❌ Cancelar' : '➕ Adicionar Novo Consumer' }}
+    </button>
+  </div>
+
+  <!-- Mensagem de erro -->
+  @if (error()) {
+    <div class="alert alert-error">
+      {{ error() }}
+    </div>
+  }
+
+  <!-- Formulário para adicionar novo robô -->
+  @if (showAddForm()) {
+    <div class="content-card">
+      <h2>Adicionar Novo Consumer</h2>
+      <form (ngSubmit)="addConsumer()" class="consumer-form">
+        <div class="form-group">
+          <label for="consumerName">Nome do Consumer *</label>
+          <input 
+            type="text" 
+            id="consumerName"
+            [(ngModel)]="newConsumer.consumerName"
+            name="consumerName"
+            placeholder="Ex: Frontend Shopping App"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="consumerIdentifier">Identificador Único *</label>
+          <input 
+            type="text" 
+            id="consumerIdentifier"
+            [(ngModel)]="newConsumer.consumerIdentifier"
+            name="consumerIdentifier"
+            placeholder="Ex: frontend-app-v1"
+            required>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descrição</label>
+          <input 
+            type="text" 
+            id="description"
+            [(ngModel)]="newConsumer.description"
+            name="description"
+            placeholder="Descrição do consumer">
+        </div>
+
+        <div class="form-group">
+          <label for="expiresAt">Data de Expiração</label>
+          <input 
+            type="datetime-local" 
+            id="expiresAt"
+            [(ngModel)]="newConsumer.expiresAt"
+            name="expiresAt">
+        </div>
+
+        <div class="form-group">
+          <label for="publicKey">Chave Pública RSA *</label>
+          <div class="key-input-group">
+            <textarea 
+              id="publicKey"
+              [(ngModel)]="newConsumer.publicKey"
+              name="publicKey"
+              placeholder="Cole aqui a chave pública RSA em formato PEM"
+              rows="6"
+              required></textarea>
+            <button type="button" class="btn btn-secondary" (click)="generateKeyPair()">
+              🔑 Gerar Exemplo
+            </button>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary" [disabled]="loading()">
+            {{ loading() ? '⏳ Criando...' : '✅ Criar Consumer' }}
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="toggleAddForm()">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  }
+
+  <!-- Lista de consumers -->
+  <div class="content-card">
+    <h2>Lista de Consumers</h2>
+    
+    @if (loading() && !showAddForm()) {
+      <div class="loading">
+        <p>⏳ Carregando consumers...</p>
+      </div>
+    } @else if (consumerKeys().length === 0) {
+      <div class="empty-state">
+        <p>Nenhum consumer encontrado. Adicione o primeiro consumer clicando no botão acima.</p>
+      </div>
+    } @else {
+      <div class="consumers-grid">
+        @for (consumer of consumerKeys(); track consumer.id) {
+          <div class="consumer-card" [class.inactive]="!consumer.active || !consumer.isValid">
+            <div class="consumer-header">
+              <h3>{{ consumer.consumerName }}</h3>
+              <div class="consumer-status">
+                @if (consumer.active && consumer.isValid) {
+                  <span class="status-badge active">✅ Ativo</span>
+                } @else if (!consumer.isValid) {
+                  <span class="status-badge expired">⏰ Expirado</span>
+                } @else {
+                  <span class="status-badge inactive">❌ Inativo</span>
+                }
+              </div>
+            </div>
+            
+            <div class="consumer-details">
+              <p><strong>Identificador:</strong> {{ consumer.consumerIdentifier }}</p>
+              <p><strong>Algoritmo:</strong> {{ consumer.keyAlgorithm }} ({{ consumer.keySize }} bits)</p>
+              @if (consumer.description) {
+                <p><strong>Descrição:</strong> {{ consumer.description }}</p>
+              }
+              <p><strong>Criado em:</strong> {{ formatDate(consumer.createdAt) }}</p>
+              @if (consumer.expiresAt) {
+                <p><strong>Expira em:</strong> {{ formatDate(consumer.expiresAt) }}</p>
+              }
+            </div>
+            
+            <div class="consumer-actions">
+              <button class="btn btn-info btn-sm" (click)="openCredentialsModal(consumer.id)">
+                🔑 Credenciais Associadas
+              </button>
+              <button class="btn btn-danger btn-sm" (click)="deleteConsumer(consumer.id)">
+                🗑️ Remover
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Modal de Credenciais Associadas -->
+  @if (showCredentialsModal()) {
+    <div class="modal-backdrop" (click)="closeCredentialsModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h2>🔑 Credenciais Associadas</h2>
+          <button class="btn btn-close" (click)="closeCredentialsModal()">
+            ✕
+          </button>
+        </div>
+        
+        <div class="modal-body">
+          <p>Modal em construção... As credenciais associadas serão implementadas aqui.</p>
+        </div>
+        
+        <div class="modal-footer">
+          <button class="btn btn-secondary" (click)="closeCredentialsModal()">
+            Fechar
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

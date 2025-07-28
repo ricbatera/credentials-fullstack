@@ -1,0 +1,7 @@
+{
+    "consumerName": "Intranetmall Robot Java",
+    "consumerIdentifier": "intranetmall-robot-java",
+    "publicKey": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi5kAqqmptynCL+p4UYnL\nDroEq/uuncpJ16DgfjRRSzDa6JCS2DW9plINnVbCCey5e7swXHcWAfq3kt4EjGW7\nnx4vsuvultK57Pls4DsSuq15f9CN33dc0Sd9lF2XxSmTowZ92F+AOpZ+d4zEY+0/\nuD7sglTmfany/oxMjtt8/3LE3UsLIAE/GQz8259YWLvbTubyERMl2LsdHo7BA1A7\n/S9QSHUgER6h6rv+YTwN2/j0Oo857iPxFO2ypBfBR7DTNYKRZnA/mohd0lndHJvF\npegF1yUBe93egauT9l7CZgMaEDlPempD6XAeMEq6AwBA1Pkon43hO2LlOb/FDghm\nDwIDAQAB\n-----END PUBLIC KEY-----",
+    "description": "Robô raspa tela para obter boletos dos sites baseado no intranetmall",
+    "expiresAt": "2030-01-31T21:01:00"
+}

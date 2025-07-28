@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Chaves RSA</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="mb-0">
+                            <i class="bi bi-key"></i>
+                            Gerador de Chaves RSA para Gerenciador de Credenciais
+                        </h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <strong>Instruções:</strong>
+                            <ol class="mb-0 mt-2">
+                                <li>Clique em "Gerar Chaves RSA" para criar um novo par de chaves</li>
+                                <li>Copie a chave pública e registre na API usando o endpoint <code>/api/consumer-keys</code></li>
+                                <li>Copie a chave privada e configure no arquivo <code>config.js</code></li>
+                                <li>Configure o identificador do consumidor no arquivo <code>config.js</code></li>
+                            </ol>
+                        </div>
+
+                        <div class="text-center mb-4">
+                            <button id="generateKeys" class="btn btn-primary btn-lg">
+                                <i class="bi bi-key"></i>
+                                Gerar Chaves RSA
+                            </button>
+                        </div>
+
+                        <div id="keysContainer" class="d-none">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="publicKey" class="form-label">Chave Pública (Para registrar na API):</label>
+                                        <textarea id="publicKey" class="form-control" rows="8" readonly></textarea>
+                                        <button id="copyPublicKey" class="btn btn-outline-secondary btn-sm mt-2">
+                                            <i class="bi bi-files"></i>
+                                            Copiar Chave Pública
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="privateKey" class="form-label">Chave Privada (Para config.js):</label>
+                                        <textarea id="privateKey" class="form-control" rows="8" readonly></textarea>
+                                        <button id="copyPrivateKey" class="btn btn-outline-secondary btn-sm mt-2">
+                                            <i class="bi bi-files"></i>
+                                            Copiar Chave Privada
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-warning">
+                                <strong>Importante:</strong>
+                                <ul class="mb-0 mt-2">
+                                    <li>Mantenha a chave privada segura e nunca a compartilhe</li>
+                                    <li>A chave pública pode ser compartilhada para permitir criptografia</li>
+                                    <li>Se perder a chave privada, você precisará gerar um novo par</li>
+                                </ul>
+                            </div>
+
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Exemplo de configuração para config.js:</h5>
+                                </div>
+                                <div class="card-body">
+                                    <pre id="configExample" class="bg-light p-3"></pre>
+                                    <button id="copyConfig" class="btn btn-outline-secondary btn-sm">
+                                        <i class="bi bi-files"></i>
+                                        Copiar Configuração
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    
+    <script>
+        class RSAKeyGenerator {
+            constructor() {
+                this.initializeEventListeners();
+            }
+
+            initializeEventListeners() {
+                document.getElementById('generateKeys').addEventListener('click', () => {
+                    this.generateRSAKeys();
+                });
+
+                document.getElementById('copyPublicKey').addEventListener('click', () => {
+                    this.copyToClipboard('publicKey', 'Chave pública');
+                });
+
+                document.getElementById('copyPrivateKey').addEventListener('click', () => {
+                    this.copyToClipboard('privateKey', 'Chave privada');
+                });
+
+                document.getElementById('copyConfig').addEventListener('click', () => {
+                    this.copyToClipboard('configExample', 'Configuração');
+                });
+            }
+
+            async generateRSAKeys() {
+                try {
+                    const generateButton = document.getElementById('generateKeys');
+                    generateButton.disabled = true;
+                    generateButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Gerando...';
+
+                    // Gerar par de chaves RSA
+                    const keyPair = await window.crypto.subtle.generateKey(
+                        {
+                            name: 'RSA-OAEP',
+                            modulusLength: 2048,
+                            publicExponent: new Uint8Array([1, 0, 1]),
+                            hash: 'SHA-256'
+                        },
+                        true,
+                        ['encrypt', 'decrypt']
+                    );
+
+                    // Exportar chaves
+                    const publicKeyBuffer = await window.crypto.subtle.exportKey('spki', keyPair.publicKey);
+                    const privateKeyBuffer = await window.crypto.subtle.exportKey('pkcs8', keyPair.privateKey);
+
+                    // Converter para PEM
+                    const publicKeyPem = this.arrayBufferToPem(publicKeyBuffer, 'PUBLIC KEY');
+                    const privateKeyPem = this.arrayBufferToPem(privateKeyBuffer, 'PRIVATE KEY');
+
+                    // Converter chave pública para Base64 para a API
+                    const publicKeyBase64 = this.arrayBufferToBase64(publicKeyBuffer);
+
+                    // Exibir chaves
+                    document.getElementById('publicKey').value = publicKeyBase64;
+                    document.getElementById('privateKey').value = privateKeyPem;
+
+                    // Gerar exemplo de configuração
+                    const configExample = `// Configurações da aplicação
+window.AppConfig = {
+    API_BASE_URL: '\${API_BASE_URL_CREDENTIALS}' || 'http://localhost:8084/api/credentials',
+    CONSUMER_IDENTIFIER: '\${CONSUMER_IDENTIFIER}' || 'frontend-app-v1',
+    PRIVATE_KEY: \`${privateKeyPem}\`,
+    PUBLIC_KEY: \`${publicKeyBase64}\`
+};`;
+
+                    document.getElementById('configExample').textContent = configExample;
+
+                    // Mostrar container de chaves
+                    document.getElementById('keysContainer').classList.remove('d-none');
+
+                    this.showAlert('Chaves RSA geradas com sucesso!', 'success');
+
+                } catch (error) {
+                    console.error('Erro ao gerar chaves:', error);
+                    this.showAlert('Erro ao gerar chaves RSA: ' + error.message, 'danger');
+                } finally {
+                    const generateButton = document.getElementById('generateKeys');
+                    generateButton.disabled = false;
+                    generateButton.innerHTML = '<i class="bi bi-key"></i> Gerar Chaves RSA';
+                }
+            }
+
+            arrayBufferToPem(buffer, type) {
+                const base64 = this.arrayBufferToBase64(buffer);
+                const pemHeader = `-----BEGIN ${type}-----`;
+                const pemFooter = `-----END ${type}-----`;
+                const pemContents = base64.match(/.{1,64}/g).join('\n');
+                return `${pemHeader}\n${pemContents}\n${pemFooter}`;
+            }
+
+            arrayBufferToBase64(buffer) {
+                const bytes = new Uint8Array(buffer);
+                let binary = '';
+                for (let i = 0; i < bytes.byteLength; i++) {
+                    binary += String.fromCharCode(bytes[i]);
+                }
+                return window.btoa(binary);
+            }
+
+            async copyToClipboard(elementId, type) {
+                try {
+                    const element = document.getElementById(elementId);
+                    const text = element.value || element.textContent;
+                    await navigator.clipboard.writeText(text);
+                    this.showAlert(`${type} copiada para área de transferência!`, 'success');
+                } catch (error) {
+                    console.error('Erro ao copiar:', error);
+                    this.showAlert('Erro ao copiar para área de transferência', 'danger');
+                }
+            }
+
+            showAlert(message, type = 'info') {
+                // Remove alertas existentes
+                const existingAlerts = document.querySelectorAll('.alert-notification');
+                existingAlerts.forEach(alert => alert.remove());
+
+                const alertDiv = document.createElement('div');
+                alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed alert-notification`;
+                alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+                
+                alertDiv.innerHTML = `
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                `;
+
+                document.body.appendChild(alertDiv);
+
+                // Auto remove após 5 segundos
+                setTimeout(() => {
+                    if (alertDiv.parentNode) {
+                        alertDiv.remove();
+                    }
+                }, 5000);
+            }
+        }
+
+        // Inicializar quando DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', () => {
+            new RSAKeyGenerator();
+        });
+    </script>
+</body>
+</html>
